@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Урок английского — AI-маркетинг</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    max-width: 760px;
+    margin: 40px auto;
+    padding: 0 20px 80px;
+    background: #faf9f7;
+    color: #2b2b2b;
+    line-height: 1.6;
+  }
+  h1 { font-size: 22px; margin-bottom: 2px; }
+  h2 { font-size: 17px; margin: 0 0 14px; }
+  .meta { color: #777; font-size: 14px; margin-bottom: 32px; }
+
+  section {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px 26px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+  section .hint { color: #888; font-size: 13px; margin: -6px 0 16px; }
+
+  /* ===== Секция 1: таргет-слова ===== */
+  #target-words-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 20px;
+  }
+  .tw-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 10px;
+    background: #fdf2d8;
+    border-radius: 8px;
+    font-size: 15px;
+  }
+  .tw-row b { font-weight: 600; }
+  .tw-row span { color: #b3812f; }
+
+  /* ===== Секция 2: сопоставление ===== */
+  #matching-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .match-col { display: flex; flex-direction: column; gap: 8px; }
+  .match-item {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1.5px solid #e4e0d8;
+    background: #fbfaf8;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .match-item:hover { background: #f3f0ea; }
+  .match-item.selected { border-color: #c9a15a; background: #fdf2d8; }
+  .match-item.correct { border-color: #4caf7d; background: #dcefe0; cursor: default; }
+  .match-item.wrong { border-color: #d9584a; background: #fbe0dc; }
+  .match-item.done { visibility: hidden; }
+  #matching-progress { margin-top: 14px; font-size: 13px; color: #888; }
+
+  /* ===== Секция 3: текст ===== */
+  #reading-text p { margin-bottom: 14px; }
+  #reading-text strong { background: #fdf2d8; padding: 0 3px; border-radius: 3px; }
+
+  /* ===== Секция 4: перевод ===== */
+  .tr-item { margin-bottom: 18px; }
+  .tr-ru { font-size: 15px; margin-bottom: 6px; }
+  .tr-row { display: flex; gap: 8px; }
+  .tr-row input {
+    flex: 1;
+    padding: 8px 10px;
+    border: 1.5px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+  .tr-row input.correct { border-color: #4caf7d; background: #f2faf4; }
+  .tr-row input.wrong { border-color: #d9584a; background: #fdf3f2; }
+  .tr-answer { font-size: 13px; color: #a35b3b; margin-top: 4px; display: none; }
+
+  button {
+    background: #2b2b2b;
+    color: #fff;
+    border: none;
+    padding: 9px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  button:disabled { background: #ccc; cursor: default; }
+
+  #finish-area { text-align: center; padding: 32px 0; }
+  #finish-area button { padding: 12px 28px; font-size: 15px; }
+  #finish-summary { display: none; margin-top: 20px; font-size: 15px; }
+
+  #my-vocab {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 28px;
+  }
+</style>
+</head>
+<body>
+
+  <h1>📚 Урок английского — AI-маркетинг</h1>
+  <p class="meta" id="lesson-meta">—</p>
+  <p id="my-vocab">Слов в общем словаре: <b id="vocab-count">0</b></p>
+
+  <section id="section-words">
+    <h2>1. Слова урока</h2>
+    <div id="target-words-grid"></div>
+  </section>
+
+  <section id="section-matching">
+    <h2>2. Сопостав слово и значение</h2>
+    <p class="hint">Кликни слово слева, потом его значение справа. Верно — зелёным и пара уходит вниз. Неверно — красным, через 5 секунд можно пробовать снова.</p>
+    <div id="matching-area">
+      <div class="match-col" id="match-col-words"></div>
+      <div class="match-col" id="match-col-meanings"></div>
+    </div>
+    <p id="matching-progress"></p>
+  </section>
+
+  <section id="section-reading">
+    <h2>3. Текст с новыми словами</h2>
+    <div id="reading-text"></div>
+  </section>
+
+  <section id="section-translate">
+    <h2>4. Переведи предложения на английский</h2>
+    <p class="hint">Проверка — на точное совпадение (регистр и знаки препинания не важны, а вот слова и их порядок — важны).</p>
+    <div id="translate-area"></div>
+  </section>
+
+  <div id="finish-area">
+    <button id="finish-btn">Завершить урок</button>
+    <div id="finish-summary"></div>
+  </div>
+
+<script src="current-lesson.js"></script>
+<script>
+  // ================================================================
+  // ДВИЖОК УРОКА
+  // Ничего специфичного для конкретного урока здесь нет — все слова,
+  // тексты и предложения приходят из current-lesson.js (переменная LESSON).
+  // Чтобы сделать новый урок, нужно просто заменить current-lesson.js —
+  // сам этот файл (engine.html) переиспользуется без изменений.
+  // ================================================================
+
+  // ===== Утилита: перемешать массив (Fisher–Yates) =====
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  // ===== Статистика урока — копится в памяти, в конце уходит в localStorage =====
+  const stats = {
+    matching: { correct: 0, mistakes: 0, perWordMistakes: {} },
+    translation: { correct: 0, attempts: 0, perSentenceMistakes: {} }
+  };
+
+  // ===== Персистентный словарь между уроками (localStorage) =====
+  const VOCAB_KEY = "englishVocab";
+  const HISTORY_KEY = "englishLessonHistory";
+
+  function loadVocab() {
+    try {
+      return JSON.parse(localStorage.getItem(VOCAB_KEY)) || {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function saveVocab(vocab) {
+    localStorage.setItem(VOCAB_KEY, JSON.stringify(vocab));
+  }
+
+  function mergeTodaysWordsIntoVocab() {
+    const vocab = loadVocab();
+    LESSON.targetWords.forEach((item) => {
+      if (!vocab[item.word]) {
+        vocab[item.word] = {
+          translation: item.translation,
+          firstSeen: LESSON.id,
+          timesSeen: 1
+        };
+      } else {
+        vocab[item.word].timesSeen += 1;
+      }
+    });
+    saveVocab(vocab);
+    return vocab;
+  }
+
+  function renderVocabCount() {
+    const vocab = loadVocab();
+    document.getElementById("vocab-count").textContent = Object.keys(vocab).length;
+  }
+
+  // ===== Инициализация страницы =====
+  function init() {
+    document.getElementById("lesson-meta").textContent =
+      LESSON.dateLabel + " · " + LESSON.topic;
+
+    renderTargetWords();
+    renderMatching();
+    renderReadingText();
+    renderTranslation();
+    renderVocabCount();
+  }
+
+  // ===== Секция 1 =====
+  function renderTargetWords() {
+    const grid = document.getElementById("target-words-grid");
+    LESSON.targetWords.forEach((item) => {
+      const row = document.createElement("div");
+      row.className = "tw-row";
+      row.innerHTML = "<b>" + item.word + "</b><span>" + item.translation + "</span>";
+      grid.appendChild(row);
+    });
+  }
+
+  // ===== Секция 2: упражнение на сопоставление =====
+  let selectedWord = null;
+  let selectedMeaning = null;
+  let matchingLocked = false;
+  let matchedCount = 0;
+
+  function renderMatching() {
+    const wordsCol = document.getElementById("match-col-words");
+    const meaningsCol = document.getElementById("match-col-meanings");
+
+    const shuffledWords = shuffle(LESSON.matching);
+    const shuffledMeanings = shuffle(LESSON.matching);
+
+    shuffledWords.forEach((item) => {
+      const el = document.createElement("div");
+      el.className = "match-item";
+      el.dataset.pairId = item.word;
+      el.dataset.side = "word";
+      el.textContent = item.word;
+      el.addEventListener("click", () => onMatchClick(el));
+      wordsCol.appendChild(el);
+    });
+
+    shuffledMeanings.forEach((item) => {
+      const el = document.createElement("div");
+      el.className = "match-item";
+      el.dataset.pairId = item.word;
+      el.dataset.side = "meaning";
+      el.textContent = item.meaning;
+      el.addEventListener("click", () => onMatchClick(el));
+      meaningsCol.appendChild(el);
+    });
+
+    updateMatchingProgress();
+  }
+
+  function onMatchClick(el) {
+    if (matchingLocked) return;
+    if (el.classList.contains("correct") || el.classList.contains("done")) return;
+
+    if (el.dataset.side === "word") {
+      if (selectedWord) selectedWord.classList.remove("selected");
+      selectedWord = el;
+    } else {
+      if (selectedMeaning) selectedMeaning.classList.remove("selected");
+      selectedMeaning = el;
+    }
+    el.classList.add("selected");
+
+    if (selectedWord && selectedMeaning) {
+      checkMatchPair();
+    }
+  }
+
+  function checkMatchPair() {
+    const isCorrect = selectedWord.dataset.pairId === selectedMeaning.dataset.pairId;
+    const key = selectedWord.dataset.pairId;
+
+    if (isCorrect) {
+      selectedWord.classList.add("correct");
+      selectedMeaning.classList.add("correct");
+      stats.matching.correct += 1;
+      matchedCount += 1;
+
+      const w = selectedWord, m = selectedMeaning;
+      setTimeout(() => {
+        w.classList.add("done");
+        m.classList.add("done");
+      }, 500);
+
+      selectedWord = null;
+      selectedMeaning = null;
+      updateMatchingProgress();
+    } else {
+      selectedWord.classList.add("wrong");
+      selectedMeaning.classList.add("wrong");
+      stats.matching.mistakes += 1;
+      stats.matching.perWordMistakes[key] = (stats.matching.perWordMistakes[key] || 0) + 1;
+
+      matchingLocked = true;
+      const w = selectedWord, m = selectedMeaning;
+      setTimeout(() => {
+        w.classList.remove("wrong", "selected");
+        m.classList.remove("wrong", "selected");
+        matchingLocked = false;
+      }, 5000);
+
+      selectedWord = null;
+      selectedMeaning = null;
+    }
+  }
+
+  function updateMatchingProgress() {
+    document.getElementById("matching-progress").textContent =
+      "Сопоставлено: " + matchedCount + " из " + LESSON.matching.length;
+  }
+
+  // ===== Секция 3: текст с подсветкой таргет-слов =====
+  function renderReadingText() {
+    const container = document.getElementById("reading-text");
+    const wordsForHighlight = LESSON.targetWords.map((w) => w.word);
+    // Экранируем спецсимволы regex (важно для слов с дефисом типа fine-tune)
+    const escaped = wordsForHighlight.map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+    const pattern = new RegExp("\\b(" + escaped.join("|") + ")\\b", "gi");
+
+    LESSON.readingText.forEach((paragraph) => {
+      const p = document.createElement("p");
+      p.innerHTML = paragraph.replace(pattern, "<strong>$1</strong>");
+      container.appendChild(p);
+    });
+  }
+
+  // ===== Секция 4: перевод RU -> EN =====
+  function normalize(str) {
+    return str
+      .trim()
+      .toLowerCase()
+      .replace(/[.,!?;:]+$/g, "")
+      .replace(/\s+/g, " ");
+  }
+
+  function renderTranslation() {
+    const area = document.getElementById("translate-area");
+    LESSON.translationSentences.forEach((item, idx) => {
+      const wrap = document.createElement("div");
+      wrap.className = "tr-item";
+      wrap.innerHTML =
+        '<div class="tr-ru">' + (idx + 1) + ". " + item.ru + "</div>" +
+        '<div class="tr-row">' +
+        '<input type="text" placeholder="твой перевод">' +
+        "<button>Проверить</button>" +
+        "</div>" +
+        '<div class="tr-answer">Правильный ответ: ' + item.en + "</div>";
+
+      const input = wrap.querySelector("input");
+      const btn = wrap.querySelector("button");
+      const answerNote = wrap.querySelector(".tr-answer");
+
+      function check() {
+        stats.translation.attempts += 1;
+        const isCorrect = normalize(input.value) === normalize(item.en);
+        if (isCorrect) {
+          stats.translation.correct += 1;
+          input.classList.remove("wrong");
+          input.classList.add("correct");
+          input.disabled = true;
+          btn.disabled = true;
+          answerNote.style.display = "none";
+        } else {
+          stats.translation.perSentenceMistakes[item.ru] =
+            (stats.translation.perSentenceMistakes[item.ru] || 0) + 1;
+          input.classList.remove("correct");
+          input.classList.add("wrong");
+          answerNote.style.display = "block";
+        }
+      }
+
+      btn.addEventListener("click", check);
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") check();
+      });
+
+      area.appendChild(wrap);
+    });
+  }
+
+  // ===== Завершение урока =====
+  document.getElementById("finish-btn").addEventListener("click", () => {
+    const vocab = mergeTodaysWordsIntoVocab();
+
+    const record = {
+      lessonId: LESSON.id,
+      date: new Date().toISOString(),
+      matching: stats.matching,
+      translation: stats.translation
+    };
+
+    const history = JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]");
+    history.push(record);
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+
+    document.getElementById("finish-btn").disabled = true;
+    const summary = document.getElementById("finish-summary");
+    summary.style.display = "block";
+    summary.innerHTML =
+      "🎉 Урок сохранён.<br>Сопоставление: " + stats.matching.correct + " верно, " +
+      stats.matching.mistakes + " ошибок.<br>Перевод: " + stats.translation.correct + " из " +
+      LESSON.translationSentences.length + " верно с первой попытки или после исправления.";
+
+    renderVocabCount();
+  });
+
+  init();
+</script>
+</body>
+</html>
