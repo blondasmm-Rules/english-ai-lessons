@@ -146,7 +146,19 @@
     <div id="finish-summary"></div>
   </div>
 
-<script src="current-lesson.js"></script>
+<script>
+  (function () {
+    // Поддержка просмотра архивных уроков: engine.html?lesson=01
+    var params = new URLSearchParams(window.location.search);
+    var lessonParam = params.get('lesson');
+    var src = 'current-lesson.js';
+    if (lessonParam) {
+      var padded = lessonParam.length === 1 ? '0' + lessonParam : lessonParam;
+      src = 'lessons-archive/lesson-' + padded + '.js';
+    }
+    document.write('<script src="' + src + '"><' + '/script>');
+  })();
+</script>
 <script>
   // ================================================================
   // ДВИЖОК УРОКА
