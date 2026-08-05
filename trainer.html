@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>Тренажёр слов — AI-маркетинг</title>
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    max-width: 460px;
+    margin: 0 auto;
+    padding: 20px 16px 60px;
+    background: #faf9f7;
+    color: #2b2b2b;
+    line-height: 1.5;
+  }
+  h1 { font-size: 20px; margin: 0 0 4px; }
+  .back-link { display: inline-block; margin-bottom: 14px; color: #7a5cff; font-size: 14px; text-decoration: none; }
+  .back-link:hover { text-decoration: underline; }
+  .meta { color: #777; font-size: 13px; margin: 0 0 20px; }
+
+  section {
+    background: #fff;
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 18px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+
+  #loading, #empty-state { text-align: center; color: #777; padding: 30px 10px; }
+
+  .progress { display: flex; justify-content: space-between; font-size: 13px; color: #888; margin-bottom: 10px; }
+
+  .card {
+    min-height: 160px;
+    border-radius: 14px;
+    background: linear-gradient(160deg, #fdf2d8, #fdeec2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 24px 16px;
+    margin-bottom: 16px;
+  }
+  .card-word { font-size: 26px; font-weight: 700; color: #2b2b2b; margin-bottom: 8px; }
+  .card-hint { font-size: 14px; color: #8c6a24; font-style: italic; }
+  .card-translation { font-size: 20px; font-weight: 600; color: #3d6b3d; margin-top: 14px; }
+
+  button {
+    font: inherit;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    min-height: 50px;
+  }
+  #show-btn { background: #2b2b2b; color: #fff; }
+  #grade-buttons { display: flex; gap: 10px; }
+  #grade-buttons button { flex: 1; }
+  #btn-no { background: #f4d6d6; color: #8c2f2f; }
+  #btn-yes { background: #d6ecd6; color: #2f6b2f; }
+
+  #include-all-row { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #555; margin-bottom: 4px; }
+
+  .add-form { display: flex; flex-direction: column; gap: 10px; }
+  .add-form input {
+    font: inherit;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1.5px solid #e4e0d8;
+    font-size: 15px;
+  }
+  #add-word-btn { background: #7a5cff; color: #fff; }
+  .add-msg { font-size: 13px; color: #3d6b3d; min-height: 18px; }
+
+  .custom-list { margin-top: 12px; font-size: 14px; }
+  .custom-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #f0ede6; }
+  .custom-item button { width: auto; padding: 4px 10px; font-size: 13px; background: #f4d6d6; color: #8c2f2f; min-height: auto; }
+
+  #reset-progress-btn { background: #f4d6d6; color: #8c2f2f; }
+
+  h2 { font-size: 16px; margin: 0 0 12px; }
+</style>
+</head>
+<body>
+
+  <a class="back-link" href="engine.html">&larr; к уроку</a>
+  <h1>🧠 Тренажёр слов</h1>
+  <p class="meta" id="header-meta">Загружаю словарь со всех уроков…</p>
+
+  <div id="loading" style="display:none;">Загружаю словарь…</div>
+
+  <section id="card-area" style="display:none;">
+    <div class="progress">
+      <span>Осталось сегодня: <b id="due-count">0</b></span>
+      <span>Всего слов в базе: <b id="total-count">0</b></span>
+    </div>
+    <label id="include-all-row">
+      <input type="checkbox" id="include-all-checkbox">
+      Учить все слова, не дожидаясь интервала повторения
+    </label>
+    <div class="card" id="card">
+      <div class="card-word" id="card-word">—</div>
+      <div class="card-hint" id="card-hint"></div>
+      <div class="card-translation" id="card-translation" style="display:none;"></div>
+    </div>
+    <button id="show-btn">Показать перевод</button>
+    <div id="grade-buttons" style="display:none;">
+      <button id="btn-no">Не помню</button>
+      <button id="btn-yes">Помню</button>
+    </div>
+  </section>
+
+  <section id="empty-state" style="display:none;">
+    🎉 На сегодня всё повторено.<br>Включи чекбокс выше, если хочешь позаниматься сверх плана.
+  </section>
+
+  <section>
+    <h2>Добавить своё слово</h2>
+    <div class="add-form">
+      <input id="new-word" placeholder="Слово / фраза на английском">
+      <input id="new-translation" placeholder="Твой перевод">
+      <button id="add-word-btn">Добавить в тренажёр</button>
+      <div class="add-msg" id="add-msg"></div>
+    </div>
+    <div class="custom-list" id="custom-list"></div>
+  </section>
+
+  <section>
+    <h2>Настройки</h2>
+    <button id="reset-progress-btn">Сбросить прогресс повторения</button>
+  </section>
+
+<script>
+(function () {
+  "use strict";
+
+  // ================================================================
+  // Тренажёр слов: собирает словарь из всех уроков (current-lesson.js +
+  // lessons-archive/*.js) прямо из GitHub, плюс свои слова из localStorage.
+  // Дальше всё работает офлайн — без единого сетевого запроса на карточку.
+  // Интервальное повторение — упрощённая система Лейтнера (5 коробок).
+  // ================================================================
+
+  const REPO_RAW_BASE = "https://raw.githubusercontent.com/blondasmm-Rules/english-ai-lessons/main/";
+  const ARCHIVE_API_URL = "https://api.github.com/repos/blondasmm-Rules/english-ai-lessons/contents/lessons-archive";
+
+  const STATE_KEY = "vocabTrainerState";       // { [word]: { box, due } }
+  const CUSTOM_KEY = "vocabTrainerCustomWords"; // [{ word, translation }]
+
+  const DAY_MS = 24 * 60 * 60 * 1000;
+  const BOX_INTERVAL_DAYS = [0, 1, 3, 7, 16, 30]; // индекс = номер коробки (0 — новое слово)
+
+  const headerMeta = document.getElementById("header-meta");
+  const loadingEl = document.getElementById("loading");
+  const cardArea = document.getElementById("card-area");
+  const emptyState = document.getElementById("empty-state");
+  const dueCountEl = document.getElementById("due-count");
+  const totalCountEl = document.getElementById("total-count");
+  const includeAllCheckbox = document.getElementById("include-all-checkbox");
+  const cardWordEl = document.getElementById("card-word");
+  const cardHintEl = document.getElementById("card-hint");
+  const cardTranslationEl = document.getElementById("card-translation");
+  const showBtn = document.getElementById("show-btn");
+  const gradeButtons = document.getElementById("grade-buttons");
+  const btnNo = document.getElementById("btn-no");
+  const btnYes = document.getElementById("btn-yes");
+  const newWordInput = document.getElementById("new-word");
+  const newTranslationInput = document.getElementById("new-translation");
+  const addWordBtn = document.getElementById("add-word-btn");
+  const addMsg = document.getElementById("add-msg");
+  const customListEl = document.getElementById("custom-list");
+  const resetBtn = document.getElementById("reset-progress-btn");
+
+  // ===== localStorage helpers =====
+  function loadState() {
+    try { return JSON.parse(localStorage.getItem(STATE_KEY)) || {}; }
+    catch (e) { return {}; }
+  }
+  function saveState(state) {
+    localStorage.setItem(STATE_KEY, JSON.stringify(state));
+  }
+  function loadCustomWords() {
+    try { return JSON.parse(localStorage.getItem(CUSTOM_KEY)) || []; }
+    catch (e) { return []; }
+  }
+  function saveCustomWords(list) {
+    localStorage.setItem(CUSTOM_KEY, JSON.stringify(list));
+  }
+
+  // ===== Загрузка урока из текста файла без коллизии const LESSON =====
+  function extractLesson(sourceText) {
+    try {
+      const fn = new Function(sourceText + "\n;return (typeof LESSON !== 'undefined') ? LESSON : null;");
+      return fn();
+    } catch (e) {
+      console.warn("Не удалось разобрать файл урока:", e);
+      return null;
+    }
+  }
+
+  async function fetchLesson(url) {
+    const res = await fetch(url + (url.indexOf("?") === -1 ? "?" : "&") + "t=" + Date.now());
+    if (!res.ok) throw new Error("HTTP " + res.status + " for " + url);
+    const text = await res.text();
+    return extractLesson(text);
+  }
+
+  // ===== Собираем словарь + подсказки (meaning) со всех уроков =====
+  async function aggregateVocab() {
+    const wordMap = new Map();   // word(lower) -> { word, translation }
+    const hintMap = new Map();   // word(lower) -> meaning (en)
+
+    function absorb(lesson) {
+      if (!lesson) return;
+      (lesson.targetWords || []).forEach((w) => {
+        if (w && w.word) wordMap.set(w.word.toLowerCase(), { word: w.word, translation: w.translation });
+      });
+      (lesson.matching || []).forEach((m) => {
+        if (m && m.word) hintMap.set(m.word.toLowerCase(), m.meaning);
+      });
+    }
+
+    // текущий урок
+    try {
+      absorb(await fetchLesson(REPO_RAW_BASE + "current-lesson.js"));
+    } catch (e) {
+      console.warn("current-lesson.js недоступен:", e);
+    }
+
+    // архив
+    try {
+      const listRes = await fetch(ARCHIVE_API_URL + "?t=" + Date.now());
+      if (listRes.ok) {
+        const files = await listRes.json();
+        for (const f of files) {
+          if (f && f.name && f.name.endsWith(".js") && f.download_url) {
+            try { absorb(await fetchLesson(f.download_url)); }
+            catch (e) { console.warn("Файл архива не загрузился:", f.name, e); }
+          }
+        }
+      }
+    } catch (e) {
+      console.warn("Список архива недоступен:", e);
+    }
+
+    return { wordMap, hintMap };
+  }
+
+  // ===== Состояние приложения =====
+  let deck = [];          // [{ word, translation, hint }]
+  let state = loadState();
+  let queue = [];
+  let currentIndex = -1;
+
+  function isDue(word) {
+    const s = state[word.toLowerCase()];
+    if (!s) return true;
+    return s.due <= Date.now();
+  }
+
+  function buildQueue() {
+    const includeAll = includeAllCheckbox.checked;
+    const pool = includeAll ? deck.slice() : deck.filter((w) => isDue(w.word));
+    // перемешать (Fisher–Yates)
+    for (let i = pool.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
+    return pool;
+  }
+
+  function refreshCounts() {
+    const dueNow = deck.filter((w) => isDue(w.word)).length;
+    dueCountEl.textContent = dueNow;
+    totalCountEl.textContent = deck.length;
+  }
+
+  function showCard() {
+    if (currentIndex >= queue.length) {
+      cardArea.style.display = "none";
+      emptyState.style.display = "block";
+      refreshCounts();
+      return;
+    }
+    cardArea.style.display = "block";
+    emptyState.style.display = "none";
+    const item = queue[currentIndex];
+    cardWordEl.textContent = item.word;
+    cardHintEl.textContent = item.hint ? item.hint : "";
+    cardTranslationEl.style.display = "none";
+    cardTranslationEl.textContent = item.translation;
+    showBtn.style.display = "block";
+    gradeButtons.style.display = "none";
+    refreshCounts();
+  }
+
+  function nextCard() {
+    currentIndex += 1;
+    showCard();
+  }
+
+  function grade(remembered) {
+    const item = queue[currentIndex];
+    const key = item.word.toLowerCase();
+    const prev = state[key] || { box: 0, due: 0 };
+    let box = prev.box || 0;
+    if (remembered) {
+      box = Math.min(box + 1, BOX_INTERVAL_DAYS.length - 1);
+    } else {
+      box = 0;
+    }
+    const due = Date.now() + BOX_INTERVAL_DAYS[box] * DAY_MS;
+    state[key] = { box: box, due: due };
+    saveState(state);
+    nextCard();
+  }
+
+  showBtn.addEventListener("click", () => {
+    cardTranslationEl.style.display = "block";
+    showBtn.style.display = "none";
+    gradeButtons.style.display = "flex";
+  });
+  btnYes.addEventListener("click", () => grade(true));
+  btnNo.addEventListener("click", () => grade(false));
+  includeAllCheckbox.addEventListener("change", () => {
+    queue = buildQueue();
+    currentIndex = -1;
+    nextCard();
+  });
+
+  function renderCustomList() {
+    const custom = loadCustomWords();
+    customListEl.innerHTML = "";
+    custom.forEach((w, idx) => {
+      const row = document.createElement("div");
+      row.className = "custom-item";
+      const label = document.createElement("span");
+      label.textContent = w.word + " — " + w.translation;
+      const del = document.createElement("button");
+      del.textContent = "Удалить";
+      del.addEventListener("click", () => {
+        const list = loadCustomWords();
+        list.splice(idx, 1);
+        saveCustomWords(list);
+        rebuildDeckWithCustom();
+        renderCustomList();
+      });
+      row.appendChild(label);
+      row.appendChild(del);
+      customListEl.appendChild(row);
+    });
+  }
+
+  let baseWordMap = new Map();
+  let hintMapGlobal = new Map();
+
+  function rebuildDeckWithCustom() {
+    const merged = new Map(baseWordMap);
+    loadCustomWords().forEach((w) => {
+      if (w && w.word) merged.set(w.word.toLowerCase(), { word: w.word, translation: w.translation });
+    });
+    deck = Array.from(merged.values()).map((w) => ({
+      word: w.word,
+      translation: w.translation,
+      hint: hintMapGlobal.get(w.word.toLowerCase()) || ""
+    }));
+    queue = buildQueue();
+    currentIndex = -1;
+    nextCard();
+  }
+
+  addWordBtn.addEventListener("click", () => {
+    const word = newWordInput.value.trim();
+    const translation = newTranslationInput.value.trim();
+    if (!word || !translation) {
+      addMsg.textContent = "Заполни и слово, и перевод.";
+      return;
+    }
+    const list = loadCustomWords();
+    list.push({ word: word, translation: translation });
+    saveCustomWords(list);
+    newWordInput.value = "";
+    newTranslationInput.value = "";
+    addMsg.textContent = "Добавлено: " + word;
+    rebuildDeckWithCustom();
+    renderCustomList();
+  });
+
+  resetBtn.addEventListener("click", () => {
+    if (confirm("Точно сбросить весь прогресс повторения? Список слов останется.")) {
+      state = {};
+      saveState(state);
+      queue = buildQueue();
+      currentIndex = -1;
+      nextCard();
+    }
+  });
+
+  // ===== Инициализация =====
+  (async function init() {
+    loadingEl.style.display = "block";
+    headerMeta.textContent = "Загружаю словарь со всех уроков…";
+    const { wordMap, hintMap } = await aggregateVocab();
+    baseWordMap = wordMap;
+    hintMapGlobal = hintMap;
+    loadingEl.style.display = "none";
+    headerMeta.textContent = "Слова собраны со всех твоих уроков + свои добавленные.";
+    renderCustomList();
+    rebuildDeckWithCustom();
+  })();
+})();
+</script>
+</body>
+</html>
