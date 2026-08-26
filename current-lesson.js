@@ -1,68 +1,68 @@
 // ============================================================
-// Данные Урока №5 — тема "AI-инструменты в маркетинге"
+// Данные Урока №6 — тема "AI-инструменты в маркетинге"
 // Это единственный файл, который меняется от урока к уроку.
 // Движок (engine.html) остаётся одним и тем же.
 // ============================================================
 const LESSON = {
-  id: "lesson-05",
-  dateLabel: "19 августа 2026",
-  topic: "AI-инструменты в маркетинге: контент, SEO и оптимизация",
+  id: "lesson-06",
+  dateLabel: "26 августа 2026",
+  topic: "AI-инструменты в маркетинге: платная реклама, A/B-тесты и прозрачность алгоритмов",
 
   // Слово + перевод — раздел 1
   targetWords: [
-    { word: "refine", translation: "дорабатывать, уточнять" },
-    { word: "keyword", translation: "ключевое слово" },
-    { word: "algorithm", translation: "алгоритм" },
-    { word: "optimize", translation: "оптимизировать" },
-    { word: "plagiarism", translation: "плагиат" },
-    { word: "originality", translation: "оригинальность, уникальность" },
-    { word: "repurpose", translation: "переиспользовать (контент в другом формате)" },
-    { word: "template", translation: "шаблон" },
-    { word: "caption", translation: "подпись (к посту, изображению)" },
-    { word: "discoverability", translation: "обнаруживаемость (в поиске)" },
-    { word: "consistency", translation: "последовательность, единообразие" },
-    { word: "accuracy", translation: "точность" }
+    { word: "bid", translation: "ставка (в аукционе за рекламный показ)" },
+    { word: "retarget", translation: "ретаргетировать (показывать рекламу тем, кто уже был на сайте)" },
+    { word: "variant", translation: "вариант (в A/B-тесте)" },
+    { word: "significance", translation: "значимость (статистическая)" },
+    { word: "incrementality", translation: "инкрементальность (реальный эффект от кампании)" },
+    { word: "fatigue", translation: "усталость (от рекламы)" },
+    { word: "allocate", translation: "распределять, выделять (бюджет)" },
+    { word: "lookalike", translation: "похожая аудитория" },
+    { word: "pacing", translation: "темп расходования бюджета" },
+    { word: "anomaly", translation: "аномалия, отклонение" },
+    { word: "threshold", translation: "порог (значение-триггер)" },
+    { word: "transparency", translation: "прозрачность" }
   ],
 
   // Слово + значение НА АНГЛИЙСКОМ — раздел 2 (упражнение на сопоставление)
   matching: [
-    { word: "refine", meaning: "to make small improvements to something so it works or reads better" },
-    { word: "keyword", meaning: "a specific word or phrase people type into a search engine" },
-    { word: "algorithm", meaning: "a set of rules a computer follows to solve a problem or complete a task" },
-    { word: "optimize", meaning: "to make something as effective or efficient as possible" },
-    { word: "plagiarism", meaning: "presenting someone else's work or words as your own" },
-    { word: "originality", meaning: "the quality of being new and not copied from something else" },
-    { word: "repurpose", meaning: "to adapt existing content so it works in a new format or channel" },
-    { word: "template", meaning: "a pre-built structure you fill in rather than starting from scratch" },
-    { word: "caption", meaning: "a short piece of text that accompanies an image or video" },
-    { word: "discoverability", meaning: "how easily people can find your content through search or recommendations" },
-    { word: "consistency", meaning: "staying the same in style, tone, or quality across everything you publish" },
-    { word: "accuracy", meaning: "how closely something matches the true or correct information" }
+    { word: "bid", meaning: "an offer of a specific amount of money in a real-time auction for ad space" },
+    { word: "retarget", meaning: "to show ads again to people who already visited your site or app" },
+    { word: "variant", meaning: "one specific version being tested against others in an experiment" },
+    { word: "significance", meaning: "the likelihood that a result is real and not simply due to chance" },
+    { word: "incrementality", meaning: "the extra outcome a campaign genuinely caused, above what would have happened anyway" },
+    { word: "fatigue", meaning: "the drop in effectiveness that happens when an audience sees the same ad too many times" },
+    { word: "allocate", meaning: "to assign a portion of a budget or resource to a specific purpose" },
+    { word: "lookalike", meaning: "a new audience built to resemble an existing group of customers" },
+    { word: "pacing", meaning: "the rate at which a budget is spent over the course of a campaign" },
+    { word: "anomaly", meaning: "something in the data that doesn't fit the usual pattern" },
+    { word: "threshold", meaning: "a specific value that, once crossed, triggers an action or alert" },
+    { word: "transparency", meaning: "being open and clear about how something works or is measured" }
   ],
 
   // Текст — раздел 3. Таргет-слова подсветятся автоматически.
   readingText: [
-    "Once a team has generated its first batch of AI content, the real work only begins: someone still has to refine every draft before it's fit to publish, checking that the tone matches the brand and that no sentence sounds like it came from a machine.",
-    "Search visibility hasn't changed just because a tool is faster. An article still needs the right keyword woven naturally through the text, and the underlying algorithm that ranks pages online cares as much about relevance as it does about speed of publishing.",
-    "That's why more teams now use AI specifically to optimize existing pages rather than only to write new ones — feeding an older post back through a tool that suggests where structure or phrasing is holding back its performance.",
-    "Editors also have to stay alert to plagiarism: a generative model trained on public text can occasionally echo a sentence too closely, and no brand wants to publish something a reader recognizes from somewhere else. Protecting originality means running every draft through a checker before it goes live.",
-    "The upside is how easily one piece of work can now repurpose into several formats: a single blog post becomes a template for a newsletter, a short video, and a handful of social captions, all without starting over each time.",
-    "None of this matters if discoverability doesn't improve, so teams track it directly — impressions, click-through rate, and time on page. And none of it matters if the numbers themselves are wrong: consistency in formatting and accuracy in reporting are what let a team trust the dashboard enough to act on it."
+    "Every time a person opens a page that carries an ad slot, a system somewhere places a bid within milliseconds, weighing how much that particular viewer is worth against what a competitor might offer for the same impression.",
+    "Once someone visits a product page without buying, most platforms will retarget them within days, showing the exact item they looked at. The same customer data can also build a lookalike audience — a fresh group of people the algorithm judges similar enough to the buyers a brand already has, even though none of them has ever visited the site.",
+    "Testing which headline performs better used to mean guessing; now a team can run two variant ads side by side and let the platform split traffic automatically. The tricky part is knowing when to trust the result — a small lift in clicks can look promising for a week and then vanish, which is exactly why marketers wait for statistical significance before declaring a winner.",
+    "A test can show that a campaign 'worked' and still be misleading, because some of those buyers would have purchased anyway. That's the question incrementality tries to answer: how much of the outcome is genuinely caused by the spend, rather than merely correlated with it.",
+    "Even a strong ad wears out. Once fatigue sets in and the same faces keep seeing the same creative, engagement drops no matter how well it was written, so a team needs to allocate fresh assets before that happens — and pacing tools spread the spend evenly across a campaign's timeline instead of burning through it in the first two days.",
+    "When spend suddenly spikes overnight, an alert should flag the anomaly before a human even opens the dashboard, usually by comparing today's numbers against a threshold set from the account's normal range. None of this replaces judgment, though, and as automated systems make more of these decisions, both regulators and customers are asking for more transparency about how an algorithm decided who saw what, and why."
   ],
 
   // RU -> EN — раздел 4. Проверка идёт на точное совпадение (без учёта регистра и пунктуации).
   translationSentences: [
-    { ru: "Дорабатывай текст, пока тон не будет соответствовать бренду.", en: "Refine the text until the tone matches the brand." },
-    { ru: "Впиши это ключевое слово в первый абзац.", en: "Add this keyword to the first paragraph." },
-    { ru: "Алгоритм оценивает релевантность, а не только скорость публикации.", en: "The algorithm evaluates relevance, not just publishing speed." },
-    { ru: "Нам нужно оптимизировать эту страницу под поиск.", en: "We need to optimize this page for search." },
-    { ru: "Проверь текст на плагиат перед публикацией.", en: "Check the text for plagiarism before publishing." },
-    { ru: "Оригинальность контента важна для читателей.", en: "Originality matters to readers." },
-    { ru: "Мы можем переиспользовать этот пост в другом формате.", en: "We can repurpose this post in a different format." },
-    { ru: "Используй этот шаблон для email-рассылки.", en: "Use this template for the email newsletter." },
-    { ru: "Напиши подпись к этому изображению.", en: "Write a caption for this image." },
-    { ru: "Обнаруживаемость этой статьи выросла после обновления.", en: "The discoverability of this article improved after the update." },
-    { ru: "Последовательность в оформлении укрепляет доверие к бренду.", en: "Consistency in formatting builds trust in the brand." },
-    { ru: "Точность отчёта важнее скорости.", en: "Accuracy in the report matters more than speed." }
+    { ru: "Система делает ставку за каждый показ за миллисекунды.", en: "The system places a bid for every impression within milliseconds." },
+    { ru: "Нам нужно ретаргетировать пользователей, которые посмотрели товар, но не купили.", en: "We need to retarget users who viewed the product but didn't buy." },
+    { ru: "Этот вариант объявления сработал лучше, чем оригинал.", en: "This variant of the ad performed better than the original." },
+    { ru: "Дождись статистической значимости, прежде чем объявлять победителя.", en: "Wait for statistical significance before declaring a winner." },
+    { ru: "Инкрементальность показывает, насколько кампания реально повлияла на результат.", en: "Incrementality shows how much the campaign truly caused." },
+    { ru: "Усталость от рекламы — вот почему вовлечённость упала на этой неделе.", en: "Ad fatigue is why engagement dropped this week." },
+    { ru: "Нам нужно выделить больше бюджета на самый эффективный канал.", en: "We need to allocate more budget to the best-performing channel." },
+    { ru: "Создай похожую аудиторию на основе наших лучших клиентов.", en: "Build a lookalike audience based on our best customers." },
+    { ru: "Проверь темп расходования бюджета кампании, прежде чем его увеличивать.", en: "Check the pacing of the campaign before increasing the budget." },
+    { ru: "Система обнаружила аномалию во вчерашних расходах.", en: "The system flagged an anomaly in yesterday's spend." },
+    { ru: "Оповещение срабатывает, как только расходы превышают этот порог.", en: "An alert triggers once spend crosses this threshold." },
+    { ru: "Клиенты ожидают большей прозрачности в том, как работает алгоритм.", en: "Customers expect more transparency about how the algorithm works." }
   ]
 };
