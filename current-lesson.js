@@ -1,68 +1,67 @@
 // ============================================================
-// Данные Урока №6 — тема "AI-инструменты в маркетинге"
+// Данные Урока №7 — тема "AI-инструменты в маркетинге"
 // Это единственный файл, который меняется от урока к уроку.
 // Движок (engine.html) остаётся одним и тем же.
 // ============================================================
 const LESSON = {
-  id: "lesson-06",
-  dateLabel: "26 августа 2026",
-  topic: "AI-инструменты в маркетинге: платная реклама, A/B-тесты и прозрачность алгоритмов",
+  id: "lesson-07",
+  dateLabel: "2 сентября 2026",
+  topic: "AI-инструменты в маркетинге: персонализация, рекомендательные системы и приватность данных",
 
   // Слово + перевод — раздел 1
   targetWords: [
-    { word: "bid", translation: "ставка (в аукционе за рекламный показ)" },
-    { word: "retarget", translation: "ретаргетировать (показывать рекламу тем, кто уже был на сайте)" },
-    { word: "variant", translation: "вариант (в A/B-тесте)" },
-    { word: "significance", translation: "значимость (статистическая)" },
-    { word: "incrementality", translation: "инкрементальность (реальный эффект от кампании)" },
-    { word: "fatigue", translation: "усталость (от рекламы)" },
-    { word: "allocate", translation: "распределять, выделять (бюджет)" },
-    { word: "lookalike", translation: "похожая аудитория" },
-    { word: "pacing", translation: "темп расходования бюджета" },
-    { word: "anomaly", translation: "аномалия, отклонение" },
-    { word: "threshold", translation: "порог (значение-триггер)" },
-    { word: "transparency", translation: "прозрачность" }
+    { word: "propensity", translation: "предрасположенность, склонность (например, к покупке)" },
+    { word: "touchpoint", translation: "точка контакта (с клиентом)" },
+    { word: "omnichannel", translation: "омниканальный (единый опыт на всех каналах)" },
+    { word: "embedding", translation: "эмбеддинг, векторное представление данных" },
+    { word: "clustering", translation: "кластеризация (группировка похожих объектов)" },
+    { word: "recency", translation: "давность (последнего действия, например покупки)" },
+    { word: "anonymize", translation: "обезличивать, анонимизировать (данные)" },
+    { word: "consent", translation: "согласие (на обработку данных)" },
+    { word: "opt-in", translation: "согласие на подписку (явное разрешение)" },
+    { word: "compliance", translation: "соответствие требованиям (законодательству)" },
+    { word: "footprint", translation: "цифровой след" },
+    { word: "latency", translation: "задержка (отклика системы)" }
   ],
 
   // Слово + значение НА АНГЛИЙСКОМ — раздел 2 (упражнение на сопоставление)
   matching: [
-    { word: "bid", meaning: "an offer of a specific amount of money in a real-time auction for ad space" },
-    { word: "retarget", meaning: "to show ads again to people who already visited your site or app" },
-    { word: "variant", meaning: "one specific version being tested against others in an experiment" },
-    { word: "significance", meaning: "the likelihood that a result is real and not simply due to chance" },
-    { word: "incrementality", meaning: "the extra outcome a campaign genuinely caused, above what would have happened anyway" },
-    { word: "fatigue", meaning: "the drop in effectiveness that happens when an audience sees the same ad too many times" },
-    { word: "allocate", meaning: "to assign a portion of a budget or resource to a specific purpose" },
-    { word: "lookalike", meaning: "a new audience built to resemble an existing group of customers" },
-    { word: "pacing", meaning: "the rate at which a budget is spent over the course of a campaign" },
-    { word: "anomaly", meaning: "something in the data that doesn't fit the usual pattern" },
-    { word: "threshold", meaning: "a specific value that, once crossed, triggers an action or alert" },
-    { word: "transparency", meaning: "being open and clear about how something works or is measured" }
+    { word: "propensity", meaning: "a natural tendency to behave in a particular way, such as buying or acting" },
+    { word: "touchpoint", meaning: "any point where a customer interacts with a brand, online or offline" },
+    { word: "omnichannel", meaning: "describing an approach where all channels are connected into one seamless customer experience" },
+    { word: "embedding", meaning: "a numerical representation of data, like text or images, that captures its meaning for a model" },
+    { word: "clustering", meaning: "the process of grouping similar data points together without predefined labels" },
+    { word: "recency", meaning: "how recently a customer last took an action, such as making a purchase" },
+    { word: "anonymize", meaning: "to remove or alter personal details so an individual can no longer be identified" },
+    { word: "consent", meaning: "explicit permission a person gives before their data can be collected or used" },
+    { word: "opt-in", meaning: "requiring someone to actively agree before they are added to a list or shown certain content" },
+    { word: "compliance", meaning: "the state of following relevant laws, regulations, or internal policies" },
+    { word: "footprint", meaning: "the trail of data a person leaves behind through their online activity" },
+    { word: "latency", meaning: "the delay between an action and a system's response to it" }
   ],
 
   // Текст — раздел 3. Таргет-слова подсветятся автоматически.
   readingText: [
-    "Every time a person opens a page that carries an ad slot, a system somewhere places a bid within milliseconds, weighing how much that particular viewer is worth against what a competitor might offer for the same impression.",
-    "Once someone visits a product page without buying, most platforms will retarget them within days, showing the exact item they looked at. The same customer data can also build a lookalike audience — a fresh group of people the algorithm judges similar enough to the buyers a brand already has, even though none of them has ever visited the site.",
-    "Testing which headline performs better used to mean guessing; now a team can run two variant ads side by side and let the platform split traffic automatically. The tricky part is knowing when to trust the result — a small lift in clicks can look promising for a week and then vanish, which is exactly why marketers wait for statistical significance before declaring a winner.",
-    "A test can show that a campaign 'worked' and still be misleading, because some of those buyers would have purchased anyway. That's the question incrementality tries to answer: how much of the outcome is genuinely caused by the spend, rather than merely correlated with it.",
-    "Even a strong ad wears out. Once fatigue sets in and the same faces keep seeing the same creative, engagement drops no matter how well it was written, so a team needs to allocate fresh assets before that happens — and pacing tools spread the spend evenly across a campaign's timeline instead of burning through it in the first two days.",
-    "When spend suddenly spikes overnight, an alert should flag the anomaly before a human even opens the dashboard, usually by comparing today's numbers against a threshold set from the account's normal range. None of this replaces judgment, though, and as automated systems make more of these decisions, both regulators and customers are asking for more transparency about how an algorithm decided who saw what, and why."
+    "A single customer rarely sticks to one channel anymore, and a modern marketing team has to track every touchpoint — the email opened at breakfast, the ad glanced at on a commute, the product page revisited that evening — and stitch them into one coherent story. That's the promise of an omnichannel strategy: instead of treating each channel as its own silo, the customer experiences one continuous conversation with the brand, regardless of where it starts or ends.",
+    "Behind the scenes, a recommendation engine is usually trying to estimate a customer's propensity to buy a particular item before they've even searched for it. To do that, the system converts products and browsing behavior into an embedding — a string of numbers that captures how similar two items or two customers really are, even when nothing in their raw data looks alike on the surface. From there, clustering groups customers with comparable embeddings into segments the marketing team never had to define by hand.",
+    "Not every signal carries equal weight, though. A purchase from three years ago says far less about what someone wants today than an order placed last week, which is why many models weigh recency heavily: a customer who bought recently, buys often, and spends a lot is treated very differently from one who ticks only one of those boxes.",
+    "None of this works, or is even legal, without the customer's consent. Under most current privacy regulations, a business needs explicit consent — often through an opt-in form — before it can anonymize and use someone's data for this kind of modeling, and proving that consent was properly collected is now a core part of compliance for any company running these systems.",
+    "Even a fully compliant, well-consented system leaves a footprint: every click, scroll, and pause becomes another data point feeding the next recommendation. And as these models grow more sophisticated, engineers are just as focused on latency as accuracy — a perfectly personalized suggestion is worthless if it loads two seconds after the customer has already left the page."
   ],
 
   // RU -> EN — раздел 4. Проверка идёт на точное совпадение (без учёта регистра и пунктуации).
   translationSentences: [
-    { ru: "Система делает ставку за каждый показ за миллисекунды.", en: "The system places a bid for every impression within milliseconds." },
-    { ru: "Нам нужно ретаргетировать пользователей, которые посмотрели товар, но не купили.", en: "We need to retarget users who viewed the product but didn't buy." },
-    { ru: "Этот вариант объявления сработал лучше, чем оригинал.", en: "This variant of the ad performed better than the original." },
-    { ru: "Дождись статистической значимости, прежде чем объявлять победителя.", en: "Wait for statistical significance before declaring a winner." },
-    { ru: "Инкрементальность показывает, насколько кампания реально повлияла на результат.", en: "Incrementality shows how much the campaign truly caused." },
-    { ru: "Усталость от рекламы — вот почему вовлечённость упала на этой неделе.", en: "Ad fatigue is why engagement dropped this week." },
-    { ru: "Нам нужно выделить больше бюджета на самый эффективный канал.", en: "We need to allocate more budget to the best-performing channel." },
-    { ru: "Создай похожую аудиторию на основе наших лучших клиентов.", en: "Build a lookalike audience based on our best customers." },
-    { ru: "Проверь темп расходования бюджета кампании, прежде чем его увеличивать.", en: "Check the pacing of the campaign before increasing the budget." },
-    { ru: "Система обнаружила аномалию во вчерашних расходах.", en: "The system flagged an anomaly in yesterday's spend." },
-    { ru: "Оповещение срабатывает, как только расходы превышают этот порог.", en: "An alert triggers once spend crosses this threshold." },
-    { ru: "Клиенты ожидают большей прозрачности в том, как работает алгоритм.", en: "Customers expect more transparency about how the algorithm works." }
+    { ru: "Модель оценивает склонность клиента купить этот продукт.", en: "The model estimates the customer's propensity to buy this product." },
+    { ru: "Каждая точка контакта с клиентом должна ощущаться как часть одной истории.", en: "Every touchpoint with the customer should feel like part of one story." },
+    { ru: "Мы переходим на омниканальную стратегию в следующем квартале.", en: "We're moving to an omnichannel strategy next quarter." },
+    { ru: "Система превращает данные о клиенте в эмбеддинг для сравнения.", en: "The system turns customer data into an embedding for comparison." },
+    { ru: "Кластеризация помогла нам найти новые сегменты клиентов.", en: "Clustering helped us find new customer segments." },
+    { ru: "Давность последней покупки — самый сильный сигнал в этой модели.", en: "Recency of the last purchase is the strongest signal in this model." },
+    { ru: "Нам нужно обезличить эти данные, прежде чем передавать их команде.", en: "We need to anonymize this data before sharing it with the team." },
+    { ru: "Мы не можем использовать эти данные без явного согласия клиента.", en: "We can't use this data without the customer's explicit consent." },
+    { ru: "Мы используем opt-in форму, чтобы собрать согласие пользователей.", en: "We use an opt-in form to collect user consent." },
+    { ru: "Соответствие требованиям GDPR обязательно для этой кампании.", en: "GDPR compliance is mandatory for this campaign." },
+    { ru: "Цифровой след клиента помогает нам точнее персонализировать рекламу.", en: "The customer's digital footprint helps us personalize ads more precisely." },
+    { ru: "Задержка отклика системы не должна превышать одной секунды.", en: "The system's latency shouldn't exceed one second." }
   ]
 };
